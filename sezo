@@ -9,11 +9,6 @@ local LocalPlayer = Players.LocalPlayer
 -- 🔐 نظام التحقق بالمعرف (User ID) - 15 مستخدم مسموح
 local AllowedUserIDs = {
     [3404223012] = true,
-    [] = true,
-    [] = true,
-    [] = true,
-    [] = true,
-    [] = true,
 }
 
 -- التحقق من المعرف
