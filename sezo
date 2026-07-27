@@ -1,14 +1,78 @@
-local Whitelist = {3404223012,7881863680}
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local StarterPack = game:GetService("StarterPack")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Camera = workspace.CurrentCamera
+local LocalPlayer = Players.LocalPlayer
 
--- هاد السطر كيتأكد واش الـ ID ديال اللاعب كاين فاللائحة
-if not table.find(Whitelist, game.Players.LocalPlayer.UserId) then
-    game.Players.LocalPlayer:Kick("Contacte sezo & تواصل مع سيزو ")
+-- 🔐 نظام التحقق بالمعرف (User ID) - 15 مستخدم مسموح
+local AllowedUserIDs = {
+    [3404223012] = true,   -- 1
+}
+
+-- التحقق من المعرف
+local function CheckUserID()
+    local userId = LocalPlayer.UserId
+    if AllowedUserIDs[userId] then
+        return true
+    else
+        return false
+    end
+end
+
+-- إذا كان المعرف غير مسموح، يتم طرد اللاعب
+if not CheckUserID() then
+    local kickGui = Instance.new("ScreenGui", game.CoreGui)
+    kickGui.Name = "KickScreen"
+    
+    local kickFrame = Instance.new("Frame", kickGui)
+    kickFrame.Size = UDim2.new(0, 400, 0, 200)
+    kickFrame.Position = UDim2.new(0.5, -200, 0.5, -100)
+    kickFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    kickFrame.BorderSizePixel = 0
+    Instance.new("UICorner", kickFrame).CornerRadius = UDim.new(0, 12)
+    
+    local kickTitle = Instance.new("TextLabel", kickFrame)
+    kickTitle.Size = UDim2.new(1, 0, 0.4, 0)
+    kickTitle.Position = UDim2.new(0, 0, 0, 0)
+    kickTitle.Text = "⛔Contacte sezo . تواصل مع سيزو ⛔"
+    kickTitle.TextColor3 = Color3.fromRGB(255, 0, 0)
+    kickTitle.BackgroundTransparency = 1
+    kickTitle.TextScaled = true
+    kickTitle.Font = Enum.Font.SourceSansBold
+    
+    local kickMsg = Instance.new("TextLabel", kickFrame)
+    kickMsg.Size = UDim2.new(1, 0, 0.3, 0)
+    kickMsg.Position = UDim2.new(0, 0, 0.4, 0)
+    kickMsg.Text = "معرفك غير مسموح باستخدام هذا الهاك\nUser ID: " .. LocalPlayer.UserId
+    kickMsg.TextColor3 = Color3.fromRGB(255, 255, 255)
+    kickMsg.BackgroundTransparency = 1
+    kickMsg.TextScaled = true
+    
+    local kickBtn = Instance.new("TextButton", kickFrame)
+    kickBtn.Size = UDim2.new(0.6, 0, 0.2, 0)
+    kickBtn.Position = UDim2.new(0.2, 0, 0.75, 0)
+    kickBtn.Text = "إغلاق"
+    kickBtn.TextScaled = true
+    kickBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    kickBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", kickBtn).CornerRadius = UDim.new(0, 8)
+    
+    kickBtn.MouseButton1Click:Connect(function()
+        kickGui:Destroy()
+        game:Shutdown()
+    end)
+    
+    -- طرد اللاعب بعد 5 ثواني
+    task.delay(5, function()
+        game:Shutdown()
+    end)
+    
+    error("User not authorized")
     return
 end
 
--- حط السكريبت ديالك هنا لتحت
-local Players = game:GetService("Players")
-print("System Authorized - Loading Scripts...")
 -- ================= باقي الهاك يبدأ من هنا =================
 -- === CONFIGURATION ===
 local espInventoryEnabled = true 
